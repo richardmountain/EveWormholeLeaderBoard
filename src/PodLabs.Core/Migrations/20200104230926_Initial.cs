@@ -12,7 +12,7 @@ namespace PodLabs.Core.Migrations
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySQL:AutoIncrement", true),
                     AllianceId = table.Column<long>(nullable: false),
                     CreatorCorporationId = table.Column<long>(nullable: false),
                     CreatorId = table.Column<long>(nullable: false),
@@ -32,7 +32,7 @@ namespace PodLabs.Core.Migrations
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySQL:AutoIncrement", true),
                     CorporationId = table.Column<long>(nullable: false),
                     AllianceId = table.Column<long>(nullable: true),
                     CeoId = table.Column<long>(nullable: false),
@@ -47,7 +47,7 @@ namespace PodLabs.Core.Migrations
                     TaxRate = table.Column<double>(nullable: false),
                     Ticker = table.Column<string>(nullable: true),
                     Url = table.Column<string>(nullable: true),
-                    WarEligible = table.Column<bool>(type: "bit", nullable: true)
+                    WarEligible = table.Column<short>(type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -59,7 +59,7 @@ namespace PodLabs.Core.Migrations
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySQL:AutoIncrement", true),
                     X = table.Column<float>(nullable: false),
                     Y = table.Column<float>(nullable: false),
                     Z = table.Column<float>(nullable: false)
@@ -74,9 +74,9 @@ namespace PodLabs.Core.Migrations
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySQL:AutoIncrement", true),
                     TrackerId = table.Column<long>(nullable: false),
-                    IsAlliance = table.Column<bool>(type: "bit", nullable: false)
+                    IsAlliance = table.Column<short>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -88,15 +88,15 @@ namespace PodLabs.Core.Migrations
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySQL:AutoIncrement", true),
                     LocationId = table.Column<long>(nullable: false),
                     Hash = table.Column<string>(nullable: true),
                     FittedValue = table.Column<double>(nullable: false),
                     TotalValue = table.Column<double>(nullable: false),
                     Points = table.Column<int>(nullable: false),
-                    NPC = table.Column<bool>(type: "bit", nullable: false),
-                    Solo = table.Column<bool>(type: "bit", nullable: false),
-                    Awox = table.Column<bool>(type: "bit", nullable: false),
+                    NPC = table.Column<short>(type: "bit", nullable: false),
+                    Solo = table.Column<short>(type: "bit", nullable: false),
+                    Awox = table.Column<short>(type: "bit", nullable: false),
                     Esi = table.Column<string>(nullable: true),
                     Url = table.Column<string>(nullable: true)
                 },
@@ -110,7 +110,7 @@ namespace PodLabs.Core.Migrations
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySQL:AutoIncrement", true),
                     CharacterId = table.Column<long>(nullable: false),
                     AllianceId = table.Column<long>(nullable: false),
                     CorporationId = table.Column<long>(nullable: false),
@@ -134,7 +134,7 @@ namespace PodLabs.Core.Migrations
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySQL:AutoIncrement", true),
                     Flag = table.Column<int>(nullable: false),
                     ItemTypeId = table.Column<int>(nullable: false),
                     QuantityDropped = table.Column<long>(nullable: true),
@@ -158,7 +158,7 @@ namespace PodLabs.Core.Migrations
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySQL:AutoIncrement", true),
                     KillmailId = table.Column<long>(nullable: false),
                     KillmailTime = table.Column<DateTime>(nullable: false),
                     SolarSystemId = table.Column<long>(nullable: false),
@@ -187,14 +187,14 @@ namespace PodLabs.Core.Migrations
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySQL:AutoIncrement", true),
                     CharacterId = table.Column<long>(nullable: false),
                     AllianceId = table.Column<long>(nullable: false),
                     CorporationId = table.Column<long>(nullable: false),
                     ShipTypeId = table.Column<long>(nullable: false),
                     DamageDone = table.Column<long>(nullable: false),
                     FactionId = table.Column<long>(nullable: false),
-                    FinalBlow = table.Column<bool>(type: "bit", nullable: false),
+                    FinalBlow = table.Column<short>(type: "bit", nullable: false),
                     SecurityStatus = table.Column<float>(nullable: false),
                     WeaponTypeID = table.Column<long>(nullable: false),
                     KillmailId = table.Column<long>(nullable: true)
@@ -215,11 +215,14 @@ namespace PodLabs.Core.Migrations
                 columns: new[] { "Id", "IsAlliance", "TrackerId" },
                 values: new object[,]
                 {
-                    { 1L, false, 98614694L },
-                    { 2L, true, 99005065L },
-                    { 3L, true, 99003144L },
-                    { 4L, true, 99009583L },
-                    { 5L, true, 99006113L }
+                    { 1L, (short)0, 98614694L },
+                    { 2L, (short)1, 99007237L },
+                    { 3L, (short)1, 99003144L },
+                    { 4L, (short)1, 99009583L },
+                    { 5L, (short)1, 99006113L },
+                    { 6L, (short)1, 99006319L },
+                    { 7L, (short)1, 99007192L },
+                    { 8L, (short)1, 99006117L }
                 });
 
             migrationBuilder.CreateIndex(

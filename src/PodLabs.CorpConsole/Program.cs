@@ -13,7 +13,6 @@ namespace PodLabs.CorpConsole
     {
         static PodLabsContext context;
         static List<Corporation> corps = new List<Corporation>();
-        static Settings settings;
 
 
         static void Main(string[] args)
@@ -75,10 +74,7 @@ namespace PodLabs.CorpConsole
 
         private static void ReadSettings()
         {
-            settings = new Settings();
-            settings = settings.GetSettings();
-
-            context = new PodLabsContext(new DbContextOptionsBuilder<PodLabsContext>().UseSqlServer(settings.ConnectionString).Options);
+            context = new PodLabsContext(new DbContextOptionsBuilder<PodLabsContext>().UseMySQL(Settings.ReadSettings().ConnectionString).Options);
         }
     }
 }

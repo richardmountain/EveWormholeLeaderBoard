@@ -25,5 +25,13 @@ namespace PodLabs.Core.Classes.Local
                 return JsonConvert.DeserializeObject<Settings>(reader.ReadToEnd());
             }
         }
+
+        public static Settings ReadSettings()
+        {
+            var settings = new Settings();
+            settings = settings.GetSettings();
+
+            return settings;
+        }
     }
 }

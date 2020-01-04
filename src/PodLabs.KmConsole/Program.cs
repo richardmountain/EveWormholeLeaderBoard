@@ -17,7 +17,6 @@ namespace PodLabs.KmConsole
     class Program
     {
         static PodLabsContext context;
-        static Settings settings;
         static MySocket mySocket = new MySocket();
 
         static void Main(string[] args)
@@ -51,10 +50,7 @@ namespace PodLabs.KmConsole
 
         private static void ReadSettings()
         {
-            settings = new Settings();
-            settings = settings.GetSettings();
-
-            context = new PodLabsContext(new DbContextOptionsBuilder<PodLabsContext>().UseSqlServer(settings.ConnectionString).Options);
+            context = new PodLabsContext(new DbContextOptionsBuilder<PodLabsContext>().UseMySQL(Settings.ReadSettings().ConnectionString).Options);
         }
 
         static void Run()
