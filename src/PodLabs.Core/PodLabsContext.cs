@@ -21,7 +21,7 @@ namespace PodLabs.Core
             try
             {
                 if (!optionsBuilder.IsConfigured)
-                    optionsBuilder.UseMySQL(Settings.ReadSettings().ConnectionString);
+                    optionsBuilder.UseMySql(Settings.ReadSettings().ConnectionString);
             } catch(Exception)
             {
 

@@ -1,0 +1,1 @@
+dotnet ef migrations script $1 --project PodLabs.Core --output "PodLabs.CorpConsole/Scripts/$1.sql"

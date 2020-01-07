@@ -50,7 +50,7 @@ namespace PodLabs.KmConsole
 
         private static void ReadSettings()
         {
-            context = new PodLabsContext(new DbContextOptionsBuilder<PodLabsContext>().UseMySQL(Settings.ReadSettings().ConnectionString).Options);
+            context = new PodLabsContext(new DbContextOptionsBuilder<PodLabsContext>().UseMySql(Settings.ReadSettings().ConnectionString).Options);
         }
 
         static void Run()
