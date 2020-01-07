@@ -22,12 +22,13 @@ namespace PodLabs.CorpConsole
         {
             try
             {
+                string connectionString = args.FirstOrDefault() ?? Settings.ReadSettings().ConnectionString;
                 Console.WriteLine("Starting Db update process...");
-                UpdateDatabase();
+                UpdateDatabase(connectionString);
                 Console.WriteLine("Db update process complete...");
 
                 Console.WriteLine("Reading settings file...");
-                ReadSettings();
+                ReadSettings(connectionString);
                 Console.WriteLine("Settings file has been read and understood!");
             }
             catch (Exception e)
@@ -91,17 +92,15 @@ namespace PodLabs.CorpConsole
             }
         }
 
-        private static void ReadSettings()
+        private static void ReadSettings(string connectionString)
         {
-            context = new PodLabsContext(new DbContextOptionsBuilder<PodLabsContext>().UseMySql(Settings.ReadSettings().ConnectionString).Options);
+            context = new PodLabsContext(new DbContextOptionsBuilder<PodLabsContext>().UseMySql(connectionString).Options);
         }
 
-        private static void UpdateDatabase()
+        private static void UpdateDatabase(string connectionString)
         {
             try
             {
-                var connectionString = Settings.ReadSettings().ConnectionString;
-
                 var upgrader =
                     DeployChanges.To
                         .MySqlDatabase(connectionString)
