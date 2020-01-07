@@ -82,9 +82,10 @@ namespace PodLabs.CorpConsole
             {
                 Console.WriteLine("=======================");
                 Console.WriteLine(e.Message);
-                if (e.InnerException.Message != "")
+                if (e.InnerException != null)
                 {
-                    Console.WriteLine(e.InnerException.Message);
+                    if (e.InnerException.Message != "")
+                        Console.WriteLine(e.InnerException.Message);
                 }
                 Console.WriteLine("=======================");
             }
@@ -126,9 +127,10 @@ namespace PodLabs.CorpConsole
             {
                 Console.WriteLine("=======================");
                 Console.WriteLine(e.Message);
-                if (e.InnerException.Message != "")
+                if (e.InnerException != null)
                 {
-                    Console.WriteLine(e.InnerException.Message);
+                    if (e.InnerException.Message != "")
+                        Console.WriteLine(e.InnerException.Message);
                 }
                 Console.WriteLine("=======================");
             }
