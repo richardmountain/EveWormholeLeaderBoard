@@ -76,7 +76,12 @@ namespace PodLabs.CorpConsole
         private static void ReadSettings()
         {
             context = new PodLabsContext(new DbContextOptionsBuilder<PodLabsContext>().UseMySQL(Settings.ReadSettings().ConnectionString).Options);
-            Task.Run(async () => { await context.Database.MigrateAsync(); }).Wait();
+
+            Task.Run(async () => { 
+                Console.WriteLine("Updating Database!");
+                await context.Database.MigrateAsync();
+                Console.WriteLine("Database has been updated.");
+            }).Wait();
         }
     }
 }
