@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DbUp;
+using Microsoft.EntityFrameworkCore;
 using PodLabs.Core;
 using PodLabs.Core.Classes.Local;
 using PodLabs.Core.Classes.Swagger;
@@ -6,7 +7,7 @@ using PodLabs.Core.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Reflection;
 
 namespace PodLabs.CorpConsole
 {
@@ -20,10 +21,9 @@ namespace PodLabs.CorpConsole
         {
             try
             {
-                Task.Run(async () =>
-                {
-                    await ReadSettingsAsync();
-                }).Wait();
+                UpdateDatabase();
+
+                ReadSettings();
             }
             catch (Exception e)
             {
@@ -76,13 +76,38 @@ namespace PodLabs.CorpConsole
             }
         }
 
-        private static async Task ReadSettingsAsync()
+        private static void ReadSettings()
         {
-            context = new PodLabsContext(new DbContextOptionsBuilder<PodLabsContext>().UseMySQL(Settings.ReadSettings().ConnectionString).Options);
+            context = new PodLabsContext(new DbContextOptionsBuilder<PodLabsContext>().UseMySql(Settings.ReadSettings().ConnectionString).Options);
+        }
 
-            Console.WriteLine("Updating Database!");
-            await context.Database.MigrateAsync();
-            Console.WriteLine("Database has been updated.");
+        private static void UpdateDatabase()
+        {
+            var connectionString = Settings.ReadSettings().ConnectionString;
+
+            var upgrader =
+                DeployChanges.To
+                    .MySqlDatabase(connectionString)
+                    .WithScriptsEmbeddedInAssembly(Assembly.GetExecutingAssembly())
+                    .LogToConsole()
+                    .Build();
+
+            var result = upgrader.PerformUpgrade();
+
+            if (!result.Successful)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine(result.Error);
+                Console.ResetColor();
+#if DEBUG
+                Console.ReadLine();
+#endif
+                return;
+            }
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("Success!");
+            Console.ResetColor();
         }
     }
 }
