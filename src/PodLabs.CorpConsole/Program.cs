@@ -97,26 +97,40 @@ namespace PodLabs.CorpConsole
 
         private static void UpdateDatabase()
         {
-            var connectionString = Settings.ReadSettings().ConnectionString;
-
-            var upgrader =
-                DeployChanges.To
-                    .MySqlDatabase(connectionString)
-                    .WithScriptsEmbeddedInAssembly(Assembly.GetExecutingAssembly())
-                    .LogToConsole()
-                    .Build();
-
-            var result = upgrader.PerformUpgrade();
-
-            if (!result.Successful)
+            try
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(result.Error);
-                Console.ResetColor();
+                var connectionString = Settings.ReadSettings().ConnectionString;
+
+                var upgrader =
+                    DeployChanges.To
+                        .MySqlDatabase(connectionString)
+                        .WithScriptsEmbeddedInAssembly(Assembly.GetExecutingAssembly())
+                        .LogToConsole()
+                        .Build();
+
+                var result = upgrader.PerformUpgrade();
+
+                if (!result.Successful)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine(result.Error);
+                    Console.ResetColor();
 #if DEBUG
-                Console.ReadLine();
+                    Console.ReadLine();
 #endif
-                return;
+                    return;
+                }
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("=======================");
+                Console.WriteLine(e.Message);
+                if (e.InnerException.Message != "")
+                {
+                    Console.WriteLine(e.InnerException.Message);
+                }
+                Console.WriteLine("=======================");
             }
 
             Console.ForegroundColor = ConsoleColor.Green;
