@@ -22,9 +22,13 @@ namespace PodLabs.CorpConsole
         {
             try
             {
+                Console.WriteLine("Starting Db update process...");
                 UpdateDatabase();
+                Console.WriteLine("Db update process complete...");
 
+                Console.WriteLine("Reading settings file...");
                 ReadSettings();
+                Console.WriteLine("Settings file has been read and understood!");
             }
             catch (Exception e)
             {
@@ -38,7 +42,9 @@ namespace PodLabs.CorpConsole
             try
             {
                 var trackerRepo = new TrackerRepository(context);
-            
+
+                Console.WriteLine("Getting list of Alliance Ids...");
+
                 var tAlliances = trackerRepo.GetAllAsync().Result.Where(x => x.IsAlliance == true).ToList();
                 var allianceRepo = new AllianceRepository(context);
 
@@ -53,6 +59,8 @@ namespace PodLabs.CorpConsole
                     corps.AddRange(corporations.Except(corps));
                 }
 
+                Console.WriteLine("Getting list of Corporation Ids...");
+
                 var tCorporations = trackerRepo.GetAllAsync().Result.Where(x => x.IsAlliance == false).ToList();
                 var corporationRepo = new CorporationRepository(context);
 
@@ -61,6 +69,8 @@ namespace PodLabs.CorpConsole
                     var corporation = new Corporation() { CorporationId = tracker.TrackerId };
                     corps.Add(corporation);
                 }
+
+                Console.WriteLine("Updating Corporation table with new data...");
 
                 foreach (var corporation in corps)
                 {
