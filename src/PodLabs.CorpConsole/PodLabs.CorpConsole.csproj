@@ -6,7 +6,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Scripts\0.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Scripts\0.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="dbup-mysql" Version="4.3.0" />
+    <PackageReference Include="MySql.Data" Version="8.0.18" />
   </ItemGroup>
 
   <ItemGroup>
