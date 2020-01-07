@@ -20,7 +20,10 @@ namespace PodLabs.CorpConsole
         {
             try
             {
-                ReadSettings();
+                Task.Run(async () =>
+                {
+                    await ReadSettingsAsync();
+                }).Wait();
             }
             catch (Exception e)
             {
@@ -73,15 +76,13 @@ namespace PodLabs.CorpConsole
             }
         }
 
-        private static void ReadSettings()
+        private static async Task ReadSettingsAsync()
         {
             context = new PodLabsContext(new DbContextOptionsBuilder<PodLabsContext>().UseMySQL(Settings.ReadSettings().ConnectionString).Options);
 
-            Task.Run(async () => { 
-                Console.WriteLine("Updating Database!");
-                await context.Database.MigrateAsync();
-                Console.WriteLine("Database has been updated.");
-            }).Wait();
+            Console.WriteLine("Updating Database!");
+            await context.Database.MigrateAsync();
+            Console.WriteLine("Database has been updated.");
         }
     }
 }
