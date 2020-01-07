@@ -6,6 +6,7 @@ using PodLabs.Core.Classes.Swagger;
 using PodLabs.Core.Repository;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 
@@ -27,7 +28,10 @@ namespace PodLabs.CorpConsole
             }
             catch (Exception e)
             {
+                var st = new StackTrace(e, true);
+                var frame = st.GetFrame(0);
                 Console.WriteLine(e.Message);
+                Console.WriteLine("Line: " + frame.GetFileLineNumber());
                 return;
             }
 
