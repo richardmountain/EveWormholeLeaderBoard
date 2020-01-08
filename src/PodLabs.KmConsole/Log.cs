@@ -21,7 +21,7 @@ namespace PodLabs.KmConsole
 
             var fileTarget = new FileTarget("target2")
             {
-                FileName = string.Format(".\\{0}", "${date:format=yyy\\MM\\dd}_debug.log"),
+                FileName = string.Format("logs/{0}", "${date:format=yyy\\MM\\dd}_debug.log"),
                 Layout = "${longdate} | ${callsite} | ${level} | ${message} | ${exception}"
             };
             config.AddTarget(fileTarget);
