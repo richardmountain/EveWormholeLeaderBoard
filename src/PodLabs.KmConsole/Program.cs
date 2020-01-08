@@ -18,6 +18,7 @@ namespace PodLabs.KmConsole
     {
         static PodLabsContext context;
         static MySocket mySocket = new MySocket();
+        static NLog.Logger logger = Log.InitLogger();
 
         static void Main(string[] args)
         {
@@ -26,7 +27,7 @@ namespace PodLabs.KmConsole
                 ReadSettings();
             } catch(Exception e)
             {
-                Console.WriteLine(e.Message);
+                logger.Error(e.Message);
                 return;
             }
 
@@ -34,13 +35,13 @@ namespace PodLabs.KmConsole
 
             while (mySocket.GetState() != WebSocketState.Open)
             {
-                Console.WriteLine("Trying to connect to zKillboard...");
+                logger.Debug("Trying to connect to zKillboard...");
                 Thread.Sleep(1000);
             }
 
             if (mySocket.GetState() == WebSocketState.Open)
             {
-                Console.WriteLine("Connected to zKillboard...");
+                logger.Debug("Connected to zKillboard...");
                 if (mySocket.Subscribe("{\"action\":\"sub\",\"channel\":\"killstream\"}"))
                 {
                     Run();
@@ -94,11 +95,11 @@ namespace PodLabs.KmConsole
                         var killmailRepo = new KillmailRepository(context);
                         killmailRepo.Add(km);
                         killmailRepo = null;
-                        Console.WriteLine(km.Victim.CorporationId);
+                        logger.Debug(km.Victim.CorporationId);
                     }
                     else
                     {
-                        Console.Write(".");
+                        logger.Debug(".");
                     }
 
                     whEntities = null;
@@ -107,13 +108,11 @@ namespace PodLabs.KmConsole
                 }
             } catch (Exception e)
             {
-                Console.WriteLine("=======================");
-                Console.WriteLine(e.Message);
+                logger.Error(e.Message);
                 if (e.InnerException.Message != "")
                 {
-                    Console.WriteLine(e.InnerException.Message);
+                    logger.Error(e.InnerException.Message);
                 }
-                Console.WriteLine("=======================");
             }
 
             Run();

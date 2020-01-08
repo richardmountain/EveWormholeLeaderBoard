@@ -4,6 +4,7 @@ using PodLabs.Core;
 using PodLabs.Core.Classes.Local;
 using PodLabs.Core.Classes.Swagger;
 using PodLabs.Core.Repository;
+using PodLabs.KmConsole;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -16,6 +17,7 @@ namespace PodLabs.CorpConsole
     {
         static PodLabsContext context;
         static List<Corporation> corps = new List<Corporation>();
+        static NLog.Logger logger = Log.InitLogger();
 
 
         static void Main(string[] args)
@@ -23,20 +25,19 @@ namespace PodLabs.CorpConsole
             try
             {
                 string connectionString = args.FirstOrDefault() ?? Settings.ReadSettings().ConnectionString;
-                Console.WriteLine("Starting Db update process...");
+                logger.Debug("Starting Db update process...");
                 UpdateDatabase(connectionString);
-                Console.WriteLine("Db update process complete...");
+                logger.Debug("Db update process complete...");
 
-                Console.WriteLine("Reading settings file...");
+                logger.Debug("Reading settings file...");
                 ReadSettings(connectionString);
-                Console.WriteLine("Settings file has been read and understood!");
+                logger.Debug("Settings file has been read and understood!");
             }
             catch (Exception e)
             {
                 var st = new StackTrace(e, true);
                 var frame = st.GetFrame(0);
-                Console.WriteLine(e.Message);
-                Console.WriteLine("Line: " + frame.GetFileLineNumber());
+                logger.Error(e.Message);
                 return;
             }
 
@@ -44,7 +45,7 @@ namespace PodLabs.CorpConsole
             {
                 var trackerRepo = new TrackerRepository(context);
 
-                Console.WriteLine("Getting list of Alliance Ids...");
+                logger.Debug("Getting list of Alliance Ids...");
 
                 var tAlliances = trackerRepo.GetAllAsync().Result.Where(x => x.IsAlliance == true).ToList();
                 var allianceRepo = new AllianceRepository(context);
@@ -60,7 +61,7 @@ namespace PodLabs.CorpConsole
                     corps.AddRange(corporations.Except(corps));
                 }
 
-                Console.WriteLine("Getting list of Corporation Ids...");
+                logger.Debug("Getting list of Corporation Ids...");
 
                 var tCorporations = trackerRepo.GetAllAsync().Result.Where(x => x.IsAlliance == false).ToList();
                 var corporationRepo = new CorporationRepository(context);
@@ -71,7 +72,7 @@ namespace PodLabs.CorpConsole
                     corps.Add(corporation);
                 }
 
-                Console.WriteLine("Updating Corporation table with new data...");
+                logger.Debug("Updating Corporation table with new data...");
 
                 foreach (var corporation in corps)
                 {
@@ -81,14 +82,12 @@ namespace PodLabs.CorpConsole
 
             } catch (Exception e)
             {
-                Console.WriteLine("=======================");
-                Console.WriteLine(e.Message);
+                logger.Error(e.Message);
                 if (e.InnerException != null)
                 {
                     if (e.InnerException.Message != "")
-                        Console.WriteLine(e.InnerException.Message);
+                        logger.Error(e.InnerException.Message);
                 }
-                Console.WriteLine("=======================");
             }
         }
 
@@ -112,31 +111,22 @@ namespace PodLabs.CorpConsole
 
                 if (!result.Successful)
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine(result.Error);
-                    Console.ResetColor();
-#if DEBUG
-                    Console.ReadLine();
-#endif
+                    logger.Error(result.Error);
                     return;
                 }
 
             }
             catch (Exception e)
             {
-                Console.WriteLine("=======================");
-                Console.WriteLine(e.Message);
+                logger.Error(e.Message);
                 if (e.InnerException != null)
                 {
                     if (e.InnerException.Message != "")
-                        Console.WriteLine(e.InnerException.Message);
+                        logger.Error(e.InnerException.Message);
                 }
-                Console.WriteLine("=======================");
             }
 
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("Success!");
-            Console.ResetColor();
+            logger.Debug("Success!");
         }
     }
 }
