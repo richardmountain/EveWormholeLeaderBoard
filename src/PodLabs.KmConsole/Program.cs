@@ -56,6 +56,10 @@ namespace PodLabs.KmConsole
 
         static void Run()
         {
+
+            if (mySocket.GetState() == WebSocketState.Aborted)
+                return;
+
             try
             {
                 while (!mySocket.IsEndOfMessage())
@@ -96,10 +100,6 @@ namespace PodLabs.KmConsole
                         killmailRepo.Add(km);
                         killmailRepo = null;
                         logger.Debug(km.Victim.CorporationId);
-                    }
-                    else
-                    {
-                        logger.Debug(".");
                     }
 
                     whEntities = null;
