@@ -1,8 +1,10 @@
 ﻿using NLog;
+using NLog.Common;
 using NLog.Config;
 using NLog.Targets;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace PodLabs.KmConsole
@@ -12,6 +14,11 @@ namespace PodLabs.KmConsole
         public static Logger InitLogger()
         {
             var config = new LoggingConfiguration();
+            
+            InternalLogger.LogToConsole = true;
+            InternalLogger.LogFile = "internal_log.txt";
+            InternalLogger.LogWriter = new StringWriter();
+            InternalLogger.LogLevel = LogLevel.Trace;
 
             var consoleTarget = new ColoredConsoleTarget("target1") 
             { 
