@@ -15,7 +15,7 @@ namespace PodLabs.KmConsole
 
             var consoleTarget = new ColoredConsoleTarget("target1") 
             { 
-                Layout = "${ date: format = HH\\:mm\\:ss} | ${ callsite} | ${ level} | ${ message} | ${ exception}"
+                Layout = "${ date: format = HH\\:mm\\:ss} : ${ callsite} : ${ level} : ${ message} : ${ exception}"
             };
             config.AddTarget(consoleTarget);
 

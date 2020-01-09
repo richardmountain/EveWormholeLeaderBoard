@@ -22,6 +22,8 @@ namespace PodLabs.KmConsole
 
         static void Main(string[] args)
         {
+            logger.Debug("PodLabs Killmail Console has been started");
+
             try
             {
                 ReadSettings();
