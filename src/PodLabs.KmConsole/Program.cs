@@ -16,22 +16,24 @@ namespace PodLabs.KmConsole
 {
     class Program
     {
-        static PodLabsContext context;
+        static PodLabsContext context = new PodLabsContext();
         static MySocket mySocket = new MySocket();
         static NLog.Logger logger = Log.InitLogger();
 
         static void Main(string[] args)
         {
-            logger.Debug("PodLabs Killmail Console has been started");
 
-            try
-            {
-                ReadSettings();
-            } catch(Exception e)
-            {
-                logger.Error(e.Message);
-                return;
-            }
+            
+            //logger.Debug("PodLabs Killmail Console has been started");
+
+            //try
+            //{
+            //    ReadSettings();
+            //} catch(Exception e)
+            //{
+            //    logger.Error(e.Message);
+            //    return;
+            //}
 
             mySocket.Connect(new Uri("wss://zkillboard.com:2096"));
 
@@ -46,78 +48,95 @@ namespace PodLabs.KmConsole
                 logger.Debug("Connected to zKillboard...");
                 if (mySocket.Subscribe("{\"action\":\"sub\",\"channel\":\"killstream\"}"))
                 {
-                    Run();
+                    //Run();
+                    while (mySocket.GetState() == WebSocketState.Open)
+                    {
+                        if (!mySocket.Wait)
+                        {
+                            var kmRepo = new KillmailRepository(context);
+                            var km = JsonConvert.DeserializeObject<Killmail>(mySocket.WaitForNextMessage());
+                            //kmRepo.Add(km);
+
+                            logger.Debug(JsonConvert.SerializeObject(km).ToString());
+
+                            //logger.Debug(mySocket.WaitForNextMessage());
+                            
+                            // Clean up
+                            km = null;
+                            kmRepo = null;
+                        }
+                    }
                 }
             }
         }
 
-        private static void ReadSettings()
-        {
-            context = new PodLabsContext(new DbContextOptionsBuilder<PodLabsContext>().UseMySql(Settings.ReadSettings().ConnectionString).Options);
-        }
+        //private static void ReadSettings()
+        //{
+        //    context = new PodLabsContext(new DbContextOptionsBuilder<PodLabsContext>().UseMySql(Settings.ReadSettings().ConnectionString).Options);
+        //}
 
-        static void Run()
-        {
+        //static void Run()
+        //{
 
-            if (mySocket.GetState() == WebSocketState.Aborted)
-                return;
+        //    if (mySocket.GetState() == WebSocketState.Aborted)
+        //        return;
 
-            try
-            {
-                while (!mySocket.IsEndOfMessage())
-                {
-                    mySocket.Receive();
-                }
+        //    try
+        //    {
+        //        while (!mySocket.IsEndOfMessage())
+        //        {
+        //            mySocket.Receive();
+        //        }
 
-                var km = JsonConvert.DeserializeObject<Killmail>(mySocket.GetMessage());
-                bool addKm = false;
+        //        var km = JsonConvert.DeserializeObject<Killmail>(mySocket.GetMessage());
+        //        bool addKm = false;
 
-                if (km != null)
-                {
-                    var trackerData = new TrackerRepository(context);
-                    List<Tracker> whEntities = new List<Tracker>();
+        //        if (km != null)
+        //        {
+        //            var trackerData = new TrackerRepository(context);
+        //            List<Tracker> whEntities = new List<Tracker>();
 
-                    Task.Run(async () =>
-                    {
-                        whEntities = await trackerData.GetAllAsync();
-                    }).Wait();
+        //            Task.Run(async () =>
+        //            {
+        //                whEntities = await trackerData.GetAllAsync();
+        //            }).Wait();
 
-                    // Is Victim?
-                    if (whEntities.FindAll(x => x.TrackerId == km.Victim.CorporationId
-                    || x.TrackerId == km.Victim.AllianceId).Count > 0)
-                    {
-                        addKm = true;
-                    }
+        //            // Is Victim?
+        //            if (whEntities.FindAll(x => x.TrackerId == km.Victim.CorporationId
+        //            || x.TrackerId == km.Victim.AllianceId).Count > 0)
+        //            {
+        //                addKm = true;
+        //            }
 
-                    if (whEntities.Where(x => km.Attackers.Any(y => y.CorporationId == x.TrackerId
-                    || y.AllianceId == x.TrackerId)).ToList().Count > 0)
-                    {
-                        addKm = true;
-                    }
+        //            if (whEntities.Where(x => km.Attackers.Any(y => y.CorporationId == x.TrackerId
+        //            || y.AllianceId == x.TrackerId)).ToList().Count > 0)
+        //            {
+        //                addKm = true;
+        //            }
 
-                    if (addKm)
-                    {
-                        // Add km
-                        var killmailRepo = new KillmailRepository(context);
-                        killmailRepo.Add(km);
-                        killmailRepo = null;
-                        logger.Debug(km.Victim.CorporationId);
-                    }
+        //            //if (addKm)
+        //           // {
+        //                // Add km
+        //                var killmailRepo = new KillmailRepository(context);
+        //                killmailRepo.Add(km);
+        //                killmailRepo = null;
+        //                logger.Debug(km.Victim.CorporationId);
+        //            //}
 
-                    whEntities = null;
-                    trackerData = null;
-                    km = null;
-                }
-            } catch (Exception e)
-            {
-                logger.Error(e.Message);
-                if (e.InnerException.Message != "")
-                {
-                    logger.Error(e.InnerException.Message);
-                }
-            }
+        //            whEntities = null;
+        //            trackerData = null;
+        //            km = null;
+        //        }
+        //    } catch (Exception e)
+        //    {
+        //        logger.Error(e.Message);
+        //        if (e.InnerException != null)
+        //        {
+        //            logger.Error(e.InnerException.Message);
+        //        }
+        //    }
 
-            Run();
-        }
+        //    Run();
+        //}
     }
 }

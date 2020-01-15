@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using PodLabs.Core.Classes.Local;
 using System;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -14,64 +13,61 @@ namespace PodLabs.Core.Classes.Swagger
 
         public Corporation(long id) : base(id) { }
 
-        [Column("CorporationId")]
+        public Corporation(long id, long corporationId) : base(id)
+        {
+            if (corporationId == 0)
+            {
+                throw new Exception("Corporation Id cannot be zero!");
+            }
+
+            this.CorporationId = corporationId;
+        }
+         
         public long CorporationId { get; set; }
 
-        [Column("AllianceId")]
         [JsonProperty("alliance_id")]
         public long? AllianceId { get; set; }
 
-        [Column("CeoId")]
         [JsonProperty("ceo_id")]
         public long CeoId { get; set; }
 
-        [Column("CreatorId")]
         [JsonProperty("creator_id")]
         public long CreatorId { get; set; }
 
-        [Column("DateFounded")]
         [JsonProperty("date_founded")]
         public DateTime? DateFounded { get; set; }
 
-        [Column("Description")]
         [JsonProperty("description")]
         public string Description { get; set; }
 
-        [Column("FactionId")]
         [JsonProperty("faction_id")]
         public long? FactionId { get; set; }
 
-        [Column("HomeStationId")]
         [JsonProperty("home_station_id")]
         public long? HomeStationId { get; set; }
 
-        [Column("MemberCount")]
         [JsonProperty("member_count")]
         public long MemberCount { get; set; }
 
-        [Column("Name")]
         [JsonProperty("name")]
         public string Name { get; set; }
 
-        [Column("Shares")]
         [JsonProperty("shares")]
         public long? Shares { get; set; }
 
-        [Column("TaxRate")]
         [JsonProperty("tax_rate")]
         public double TaxRate { get; set; }
 
-        [Column("Ticker")]
         [JsonProperty("ticker")]
         public string Ticker { get; set; }
 
-        [Column("Url")]
         [JsonProperty("url")]
         public string Url { get; set; }
 
-        [Column("WarEligible", TypeName = "bit")]
         [JsonProperty("war_eligible")]
         public bool? WarEligible { get; set; }
+
+        public virtual Alliance Alliance { get; set; }
 
         public override bool Validate()
         {

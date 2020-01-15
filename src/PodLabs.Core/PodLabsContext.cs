@@ -2,6 +2,9 @@
 using PodLabs.Core.Classes.Local;
 using PodLabs.Core.Classes.Swagger;
 using PodLabs.Core.Classes.zKillboard;
+using PodLabs.Core.EntityConfigurations.Local;
+using PodLabs.Core.EntityConfigurations.Swagger;
+using PodLabs.Core.EntityConfigurations.zKillboard;
 using System;
 
 namespace PodLabs.Core
@@ -11,10 +14,12 @@ namespace PodLabs.Core
         public PodLabsContext() { }
         public PodLabsContext(DbContextOptions optionsBuilder) : base(optionsBuilder) { }
 
-        public DbSet<Tracker> Trackers { get; set; }
-        public DbSet<Alliance> Alliances { get; set; }
-        public DbSet<Corporation> Corporations { get; set; }
+        //public DbSet<Tracker> Trackers { get; set; }
+        //public DbSet<Alliance> Alliances { get; set; }
+        //public DbSet<Corporation> Corporations { get; set; }
         public DbSet<Killmail> Killmails { get; set; }
+        //public DbSet<Attacker> Attackers { get; set; }
+        //public DbSet<Victim> Victims { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -30,6 +35,17 @@ namespace PodLabs.Core
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+            modelBuilder.ApplyConfiguration(new KillmailEntityConfiguration());
+            //modelBuilder.ApplyConfiguration(new TrackerEntityConfiguration());
+            //modelBuilder.ApplyConfiguration(new AllianceEntityConfiguration());
+            //modelBuilder.ApplyConfiguration(new CorporationEntityConfiguration());
+            //modelBuilder.ApplyConfiguration(new AttackerEntityConfiguration());
+            //modelBuilder.ApplyConfiguration(new ItemEntityConfiguration());
+            //modelBuilder.ApplyConfiguration(new VictimEntityConfiguration());
+            //modelBuilder.ApplyConfiguration(new ZkbEntityConfiguration());
+
+
             modelBuilder.Entity<Tracker>().HasData(
                 new Tracker(1) { IsAlliance = false, TrackerId = 98614694 },            // Isolation Cult
                 new Tracker(2) { IsAlliance = true, TrackerId = 99007237 },             // L A Z E R H A W K S

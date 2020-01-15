@@ -15,36 +15,36 @@ namespace PodLabs.UnitTest.Core.Repository
     {
         private AllianceRepository _repository;
 
-        [TestMethod]
-        public void AddValidTest()
-        {
-            // Arrange
-            var options = new DbContextOptionsBuilder<PodLabsContext>()
-                           .UseInMemoryDatabase("Add_Valid_Test")
-                           .Options;
+        //[TestMethod]
+        //public void AddValidTest()
+        //{
+        //    // Arrange
+        //    var options = new DbContextOptionsBuilder<PodLabsContext>()
+        //                   .UseInMemoryDatabase("Add_Valid_Test")
+        //                   .Options;
 
-            _repository = new AllianceRepository(new PodLabsContext(options));
-            _repository.Add(new Alliance(1)
-            {
-                AllianceId = 99003144,
-                CreatorCorporationId = 1705300610,
-                CreatorId = 927945665,
-                ExecutorCorporationId = 1705300610,
-                Name = "Scary Wormhole People",
-                Ticker = "WHBOO"
-            });
+        //    _repository = new AllianceRepository(new PodLabsContext(options));
+        //    _repository.Add(new Alliance(1)
+        //    {
+        //        AllianceId = 99003144,
+        //        CreatorCorporationId = 1705300610,
+        //        CreatorId = 927945665,
+        //        ExecutorCorporationId = 1705300610,
+        //        Name = "Scary Wormhole People",
+        //        Ticker = "WHBOO"
+        //    });
 
-            // Act
-            using (var context = new PodLabsContext(options))
-            {
-                var results = context.Alliances.FirstOrDefault();
+        //    // Act
+        //    using (var context = new PodLabsContext(options))
+        //    {
+        //        var results = context.Alliances.FirstOrDefault();
 
-                // Assert
-                Assert.AreEqual("Scary Wormhole People", results.Name);
-            }
+        //        // Assert
+        //        Assert.AreEqual("Scary Wormhole People", results.Name);
+        //    }
 
 
-        }
+        //}
 
         [TestMethod]
         public void GetAllValidTest()

@@ -16,30 +16,30 @@ namespace PodLabs.UnitTest.Core.Repository
 
         private TrackerRepository _repository;
 
-        [TestMethod]
-        public void AddValidTest()
-        {
-            // Arrange
-            var options = new DbContextOptionsBuilder<PodLabsContext>()
-                           .UseInMemoryDatabase("Add_Valid_Test")
-                           .Options;
+        //[TestMethod]
+        //public void AddValidTest()
+        //{
+        //    // Arrange
+        //    var options = new DbContextOptionsBuilder<PodLabsContext>()
+        //                   .UseInMemoryDatabase("Add_Valid_Test")
+        //                   .Options;
 
-            _repository = new TrackerRepository(new PodLabsContext(options));
-            _repository.Add(new Tracker(1)
-            {
-                IsAlliance = false,
-                TrackerId = 98614694
-            });
+        //    _repository = new TrackerRepository(new PodLabsContext(options));
+        //    _repository.Add(new Tracker(1)
+        //    {
+        //        IsAlliance = false,
+        //        TrackerId = 98614694
+        //    });
 
-            // Act
-            using (var context = new PodLabsContext(options))
-            {
-                var results = context.Trackers.FirstOrDefault();
+        //    // Act
+        //    using (var context = new PodLabsContext(options))
+        //    {
+        //        var results = context.Trackers.FirstOrDefault();
 
-                // Assert
-                Assert.AreEqual(98614694, results.TrackerId);
-            }
-        }
+        //        // Assert
+        //        Assert.AreEqual(98614694, results.TrackerId);
+        //    }
+        //}
 
         [TestMethod]
         public void GetAllValidTest()

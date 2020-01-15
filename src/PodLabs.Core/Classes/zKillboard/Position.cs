@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using PodLabs.Core.Classes.Local;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PodLabs.Core.Classes.zKillboard
 {
@@ -11,15 +10,12 @@ namespace PodLabs.Core.Classes.zKillboard
         public Position(long id) : base(id) { }
 
         #region Properties
-        [Column("X")]
         [JsonProperty("x")]
         public float X { get; set; }
 
-        [Column("Y")]
         [JsonProperty("y")]
         public float Y { get; set; }
 
-        [Column("Z")]
         [JsonProperty("z")]
         public float Z { get; set; }
         #endregion

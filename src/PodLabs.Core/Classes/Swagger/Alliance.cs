@@ -2,7 +2,6 @@
 using PodLabs.Core.Classes.Local;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -15,38 +14,30 @@ namespace PodLabs.Core.Classes.Swagger
 
         public Alliance(long id) : base(id) { }
 
-        [Column("AllianceId")]
         public long AllianceId { get; set; }
 
-        [Column("CreatorCorporationId")]
         [JsonProperty("creator_corporation_id")]
         public long CreatorCorporationId { get; set; }
 
-        [Column("CreatorId")]
         [JsonProperty("creator_id")]
         public long CreatorId { get; set; }
 
-        [Column("DateFounded")]
         [JsonProperty("date_founded")]
         public DateTime DateFounded { get; set; }
 
-        [Column("ExecutorCorporationId")]
         [JsonProperty("executor_corporation_id")]
         public long? ExecutorCorporationId { get; set; }
 
-        [Column("FactionId")]
         [JsonProperty("faction_id")]
         public long? FactionId { get; set; }
 
-        [Column("Name")]
         [JsonProperty("name")]
         public string Name { get; set; }
 
-        [Column("Ticker")]
         [JsonProperty("ticker")]
         public string Ticker { get; set; }
 
-        //public virtual List<Corporation> Corporations { get; set; }
+        public virtual ICollection<Corporation> Corporations { get; set; }
 
         public override bool Validate()
         {

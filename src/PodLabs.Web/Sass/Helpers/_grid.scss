@@ -1,0 +1,38 @@
+﻿.container-fluid {
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.container {
+    display: flex;
+    flex-flow: row wrap;
+    flex: 1 100%;
+
+    @extend .m-auto;
+}
+
+.container-fluid > * {
+}
+
+.container > * {
+    flex: 1 100%;
+}
+.container-fluid {
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.container {
+    display: flex;
+    flex-flow: row wrap;
+    flex: 1 100%;
+
+    @extend .m-auto;
+}
+
+.container-fluid > * {
+}
+
+.container > * {
+    flex: 1 100%;
+}

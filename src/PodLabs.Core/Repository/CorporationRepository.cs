@@ -34,39 +34,40 @@ namespace PodLabs.Core.Repository
         {
             if (entity == null) return false;
             
-            try
-            {
-                var result = _DbContext.Corporations.Where(x => x.CorporationId == entity.CorporationId).FirstOrDefault();
-                if (result == null)
-                {
-                    _DbContext.Add(entity);
-                } 
-                else
-                {
-                    result.AllianceId = entity.AllianceId;
-                    result.CeoId = entity.CeoId;
-                    result.CreatorId = entity.CreatorId;
-                    result.Description = entity.Description;
-                    result.FactionId = entity.FactionId;
-                    result.HomeStationId = entity.HomeStationId;
-                    result.MemberCount = entity.MemberCount;
-                    result.Shares = entity.Shares;
-                    result.TaxRate = entity.TaxRate;
-                    result.Url = entity.Url;
-                    result.WarEligible = entity.WarEligible;
-                }
-                _DbContext.SaveChanges();
-            }catch (Exception)
-            {
-                return false;
-            }
+            //try
+            //{
+            //    var result = _DbContext.Corporations.Where(x => x.CorporationId == entity.CorporationId).FirstOrDefault();
+            //    if (result == null)
+            //    {
+            //        _DbContext.Add(entity);
+            //    } 
+            //    else
+            //    {
+            //        result.AllianceId = entity.AllianceId;
+            //        result.CeoId = entity.CeoId;
+            //        result.CreatorId = entity.CreatorId;
+            //        result.Description = entity.Description;
+            //        result.FactionId = entity.FactionId;
+            //        result.HomeStationId = entity.HomeStationId;
+            //        result.MemberCount = entity.MemberCount;
+            //        result.Shares = entity.Shares;
+            //        result.TaxRate = entity.TaxRate;
+            //        result.Url = entity.Url;
+            //        result.WarEligible = entity.WarEligible;
+            //    }
+            //    _DbContext.SaveChanges();
+            //}catch (Exception)
+            //{
+            //    return false;
+            //}
             
             return true;
         }
 
         public async Task<List<Corporation>> GetAllAsync()
         {
-            return await _DbContext.Corporations.ToListAsync();
+            //return await _DbContext.Corporations.ToListAsync();
+            return null;
         }
     }
 }

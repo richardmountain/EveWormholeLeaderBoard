@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using PodLabs.Core.Classes.zKillboard;
+using System;
 using System.Net.WebSockets;
 using System.Text;
 using System.Threading;
@@ -15,6 +17,28 @@ namespace PodLabs.Core
         public MySocket()
         {
             wb = new ClientWebSocket();
+        }
+
+        public bool Wait { get; set; }
+
+        public string WaitForNextMessage()
+        {
+            Wait = true;
+
+            if (GetState() == WebSocketState.Aborted)
+            {
+                Wait = false;
+                return "";
+            }
+                
+                while (!IsEndOfMessage())
+                {
+                    Receive();
+                }
+
+            Wait = false;
+
+            return GetMessage();
         }
 
         public void Connect(Uri uri)
@@ -37,7 +61,7 @@ namespace PodLabs.Core
             return true;
         }
 
-        public void Receive()
+        private void Receive()
         {
             byte[] newBuffer = new byte[message.Length];
             byte[] buffer = new byte[1024];
@@ -54,7 +78,7 @@ namespace PodLabs.Core
             message = newBuffer;
         }
 
-        public bool IsEndOfMessage()
+        private bool IsEndOfMessage()
         {
             if (result == null)
             {
@@ -64,7 +88,7 @@ namespace PodLabs.Core
             return result.EndOfMessage;
         }
 
-        public string GetMessage()
+        private string GetMessage()
         {
             var msg = message;
             message = new byte[0];

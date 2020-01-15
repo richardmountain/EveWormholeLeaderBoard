@@ -10,10 +10,8 @@ namespace PodLabs.Core.Classes.Local
 
         public Tracker(long defaultId) : base(defaultId) { }
 
-        [Column("TrackerId")]
         public long TrackerId { get; set; }
 
-        [Column("IsAlliance", TypeName = "bit")]
         public bool IsAlliance { get; set; }
 
         public override bool Validate()

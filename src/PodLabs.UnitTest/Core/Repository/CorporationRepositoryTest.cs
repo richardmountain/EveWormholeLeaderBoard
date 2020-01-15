@@ -15,37 +15,37 @@ namespace PodLabs.UnitTest.Core.Repository
     {
         private CorporationRepository _repository;
 
-        [TestMethod]
-        public void AddValidTest()
-        {
-            // Arrange
-            var options = new DbContextOptionsBuilder<PodLabsContext>()
-                           .UseInMemoryDatabase("Add_Valid_Test")
-                           .Options;
+        //[TestMethod]
+        //public void AddValidTest()
+        //{
+        //    // Arrange
+        //    var options = new DbContextOptionsBuilder<PodLabsContext>()
+        //                   .UseInMemoryDatabase("Add_Valid_Test")
+        //                   .Options;
 
-            _repository = new CorporationRepository(new PodLabsContext(options));
-            _repository.Add(new Corporation(1)
-            {
-                CeoId = 2071244718,
-                CreatorId = 96180477,
-                MemberCount = 28,
-                Name = "Isolation Cult",
-                Shares = 1000,
-                TaxRate = 0.05,
-                Ticker = "1.5.0"
-            });
+        //    _repository = new CorporationRepository(new PodLabsContext(options));
+        //    _repository.Add(new Corporation(1)
+        //    {
+        //        CeoId = 2071244718,
+        //        CreatorId = 96180477,
+        //        MemberCount = 28,
+        //        Name = "Isolation Cult",
+        //        Shares = 1000,
+        //        TaxRate = 0.05,
+        //        Ticker = "1.5.0"
+        //    });
 
-            // Act
-            using (var context = new PodLabsContext(options))
-            {
-                var results = context.Corporations.FirstOrDefault();
+        //    // Act
+        //    using (var context = new PodLabsContext(options))
+        //    {
+        //        var results = context.Corporations.FirstOrDefault();
 
-                // Assert
-                Assert.AreEqual("Isolation Cult", results.Name);
-            }
+        //        // Assert
+        //        Assert.AreEqual("Isolation Cult", results.Name);
+        //    }
 
 
-        }
+        //}
 
         [TestMethod]
         public void GetAllValidTest()

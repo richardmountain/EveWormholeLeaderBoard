@@ -4,12 +4,12 @@ using PodLabs.Core;
 using PodLabs.Core.Classes.Local;
 using PodLabs.Core.Classes.Swagger;
 using PodLabs.Core.Repository;
-using PodLabs.KmConsole;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace PodLabs.CorpConsole
 {
@@ -26,7 +26,9 @@ namespace PodLabs.CorpConsole
             {
                 string connectionString = args.FirstOrDefault() ?? Settings.ReadSettings().ConnectionString;
                 logger.Debug("Starting Db update process...");
-                UpdateDatabase(connectionString);
+
+                UpdateDatabaseAsync(connectionString);
+
                 logger.Debug("Db update process complete...");
 
                 logger.Debug("Reading settings file...");
@@ -96,7 +98,7 @@ namespace PodLabs.CorpConsole
             context = new PodLabsContext(new DbContextOptionsBuilder<PodLabsContext>().UseMySql(connectionString).Options);
         }
 
-        private static void UpdateDatabase(string connectionString)
+        private static void UpdateDatabaseAsync(string connectionString)
         {
             try
             {

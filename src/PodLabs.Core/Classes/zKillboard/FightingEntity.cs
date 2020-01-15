@@ -21,7 +21,21 @@ namespace PodLabs.Core.Classes.zKillboard
 
         [Column("CorporationId")]
         [JsonProperty("corporation_id")]
-        public long CorporationId { get; set; }
+        public long CorporationId
+        {
+            get
+            {
+                if (_corporationId > 0)
+                    this.Corporation = new Corporation() { CorporationId = _corporationId };
+
+                return _corporationId;
+            }
+            set
+            {
+                _corporationId = value;
+            }
+        }
+        private long _corporationId;
 
         [Column("ShipTypeId")]
         [JsonProperty("ship_type_id")]
@@ -29,7 +43,7 @@ namespace PodLabs.Core.Classes.zKillboard
         #endregion
 
         #region Relationships
-
+        public virtual Corporation Corporation { get; set; }
         #endregion
 
         #region Methods

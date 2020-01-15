@@ -30,7 +30,8 @@ namespace PodLabs.Core.Repository
 
         public async Task<List<Tracker>> GetAllAsync()
         {
-            return await _DbContext.Trackers.ToListAsync();
+            //return await _DbContext.Trackers.ToListAsync();
+            return null;
         }
     }
 }

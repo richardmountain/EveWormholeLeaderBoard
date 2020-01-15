@@ -2,3 +2,4 @@
 src/**/bin/
 src/**/obj/
 /src/PodLabs.Core/settings.json
+src/PodLabs.Web/settings.json

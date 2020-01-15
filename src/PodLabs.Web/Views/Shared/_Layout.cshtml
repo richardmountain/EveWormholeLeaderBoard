@@ -1,0 +1,21 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - PodLabs</title>
+    <link href="https://fonts.googleapis.com/css?family=Barlow&display=swap" rel="stylesheet">
+    <link href="@Url.Content("~/css/main.css")" lang="en" rel="stylesheet" type="text/css" />
+</head>
+<body>
+
+    <div class="container p-10">
+
+        @RenderBody()
+        <p class="text-center p-10">&copy; @DateTime.Now.Year - 1NV3R7</p>
+
+    </div>
+    <script type="text/javascript" src="@Url.Content("/js/site.min.js")"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

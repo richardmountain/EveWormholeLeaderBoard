@@ -31,33 +31,34 @@ namespace PodLabs.Core.Repository
 
         public bool AddOrUpdate(Alliance entity)
         {
-            if (entity == null) return false;
+            //if (entity == null) return false;
 
-            try
-            {
-                var result = _DbContext.Alliances.Where(x => x.AllianceId == entity.AllianceId).FirstOrDefault();
-                if (result == null)
-                {
-                    _DbContext.Add(entity);
-                }
-                else
-                {
-                    result.ExecutorCorporationId = entity.ExecutorCorporationId;
-                    result.FactionId = entity.FactionId;
-                }
-                _DbContext.SaveChanges();
-            }
-            catch (Exception)
-            {
-                return false;
-            }
+            //try
+            //{
+            //    var result = _DbContext.Alliances.Where(x => x.AllianceId == entity.AllianceId).FirstOrDefault();
+            //    if (result == null)
+            //    {
+            //        _DbContext.Add(entity);
+            //    }
+            //    else
+            //    {
+            //        result.ExecutorCorporationId = entity.ExecutorCorporationId;
+            //        result.FactionId = entity.FactionId;
+            //    }
+            //    _DbContext.SaveChanges();
+            //}
+            //catch (Exception)
+            //{
+            //    return false;
+            //}
 
             return true;
         }
 
         public async Task<List<Alliance>> GetAllAsync()
         {
-            return await _DbContext.Alliances.ToListAsync();
+            //return await _DbContext.Alliances.ToListAsync();
+            return null;
         }
     }
 }

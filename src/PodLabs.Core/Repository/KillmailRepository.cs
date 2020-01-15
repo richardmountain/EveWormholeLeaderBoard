@@ -2,7 +2,7 @@
 using PodLabs.Core.Classes.zKillboard;
 using System;
 using System.Collections.Generic;
-
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace PodLabs.Core.Repository
@@ -11,7 +11,7 @@ namespace PodLabs.Core.Repository
     {
 
         public KillmailRepository(PodLabsContext context) : base(context) { }
-
+        
         public bool Add(Killmail entity)
         {
             if (entity == null) return false;
@@ -21,9 +21,9 @@ namespace PodLabs.Core.Repository
                 _DbContext.Add(entity);
                 _DbContext.SaveChanges();
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return false;
+                return PrintError(e);
             }
 
             return true;
@@ -31,7 +31,8 @@ namespace PodLabs.Core.Repository
 
         public async Task<List<Killmail>> GetAllAsync()
         {
-            return await _DbContext.Killmails.ToListAsync();
+            //return await _DbContext.Killmails.ToListAsync();
+            return null;
         }
     }
 }
